@@ -28,7 +28,10 @@ jobs:
         run: npx cypress install
 
       - name: Run Cypress Tests
-        run: npx cypress run --browser electron --headless --spec "cypress/e2e/*.cy.js"
+        with:
+         browser: chrome 
+         headless: true 
+         config-file: cypress.config.js # Optional, if you use a custom config
 
       - name: Upload Cypress Test Results (Screenshots/Videos)
         if: success() || failure()
