@@ -24,17 +24,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Verify Cypress Installation
-        run: npx cypress --version  # Debugging step
+      - name: Debug Cypress Installation
+        run: ls -l node_modules/.bin/
 
       - name: Fix Cypress Permissions
-        run: chmod +x ./node_modules/.bin/cypress
+        run: chmod +x node_modules/.bin/cypress
 
-      - name: Install Cypress
-        run: npx cypress install
+      - name: Install Cypress Globally
+        run: npm install -g cypress
 
       - name: Run Cypress Tests
-        run: ./node_modules/.bin/cypress run --browser electron --headless --spec "cypress/e2e/*.cy.js"
+        run: npx --no-install cypress run --browser chrome --headless --spec "cypress/e2e/*.cy.js"
 
       - name: Upload Cypress Test Results (Screenshots/Videos)
         if: success() || failure()
