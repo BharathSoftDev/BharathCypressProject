@@ -11,7 +11,6 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,23 +21,23 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install
-
-      - name: Install Cypress
-        run: npx cypress install
+        run: |
+          npm install
+          npx cypress cache clear  # Ensure no cache issues
+          npx cypress install      # Install Cypress dependencies
 
       - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
         with:
-         browser: chrome 
-         headless: true 
-         config-file: cypress.config.js # Optional, if you use a custom config
-
+          browser: chrome
+          headless: true
+          config-file: cypress.config.js  # Optional, if you use a custom config
+          
       - name: Upload Cypress Test Results (Screenshots/Videos)
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
+        if: always()
+        uses: actions/upload-artifact@v4  # ✅ Updated to v4
         with:
           name: cypress-results
           path: |
             cypress/screenshots
             cypress/videos
-          if-no-files-found: ignore
